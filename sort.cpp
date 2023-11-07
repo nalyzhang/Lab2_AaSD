@@ -17,21 +17,17 @@ void SelectionSort(int* a, unsigned size)
     }
 }
 
-void InsertionSort(int* a, unsigned begin, unsigned end)
+void InsertionSort(int* arr, unsigned begin, unsigned end)
 {
-    int buff = a[begin];
-    int keybuff;
-    for (unsigned i = begin + 1; i < end; i++) {
-        buff = a[i];
-        keybuff = i - 1;
-        while (keybuff >= 0 && a[keybuff] > buff)
-        {
-            int* pa = &(*(a + keybuff + 1));
-            int* pb = &(*(a + keybuff));
-            swap(pa, pb);
-            swap(pb, &buff);
-            --keybuff;
+    int i, key, j;
+    for (i = 1; i < end; i++) {
+        key = arr[i];
+        j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
         }
+        arr[j + 1] = key;
     }
 }
 
@@ -39,10 +35,10 @@ void BubbleSort(int* a, unsigned size)
 {
     for (unsigned i = 0; i < size - 1; i++) {
         for (unsigned j = 0; j < size - 1 - i; j++) {
-            if (*(a + j) > *(a + j + 1))
+            if (a[j] > a[j+1])
             {
-                int* pa = &(*(a + j));
-                int* pb = &(*(a + j + 1));
+                int* pa = &a[j];
+                int* pb = &a[j+1];
                 swap(pa, pb);
             }
         }
@@ -114,8 +110,8 @@ void HeapSort(int* a, unsigned end)
         heapify(a, end, i);
 
     for (int i = end - 1; i >= 0; i--) {
-        int* pa = &(*(a));
-        int* pb = &(*(a + i));
+        int* pa = &a[0];
+        int* pb = &a[i];
         swap(pa, pb);
         heapify(a, i, 0);
     }
@@ -250,5 +246,55 @@ void heapify(int* a, int size, int i)
         swap(pa, pb);
 
         heapify(a, size, largest);
+    }
+}
+
+void ShellSortDivision(int* arr, int len)
+{
+    for (int step = len / 2; step != 1; step /= 2)
+    {
+        for (int i = step; i < len; i += 1)
+        {
+            int temp = arr[i];
+            int j;
+            for (j = i; j >= step && arr[j - step] > temp; j -= step)
+            {
+                arr[j] = arr[j - step];
+            }
+            arr[j] = temp;
+        }
+    }
+}
+void ShellSortExponencial(int* arr, int len)
+{
+    int k = 1;
+    for (int step = 1; step <=len; step = pow(2,k++)-1)
+    {
+        for (int i = step; i < len; i += 1)
+        {
+            int temp = arr[i];
+            int j;
+            for (j = i; j >= step && arr[j - step] > temp; j -= step)
+            {
+                arr[j] = arr[j - step];
+            }
+            arr[j] = temp;
+        }
+    }
+}
+void ShellSortSubstact(int* arr, int len)
+{
+    for (int step = len / 2; step != 1; step--)
+    {
+        for (int i = step; i < len; i += 1)
+        {
+            int temp = arr[i];
+            int j;
+            for (j = i; j >= step && arr[j - step] > temp; j -= step)
+            {
+                arr[j] = arr[j - step];
+            }
+            arr[j] = temp;
+        }
     }
 }
